@@ -4,9 +4,16 @@ import jsonPlaceholder from '../apis/jsonPlaceholder';
 export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   await dispatch(fetchPosts());
 
-  //Lodash library
-  const userIds = _.uniq(_.map(getState().posts, 'userId'));
-  userIds.forEach((id) => dispatch(fetchUser(id)));
+  // //Lodash library
+  // const userIds = _.uniq(_.map(getState().posts, 'userId'));
+  // userIds.forEach((id) => dispatch(fetchUser(id)));
+
+  // Refactor for lodash code
+  _.chain(getState().posts)
+    .map('userId')
+    .uniq()
+    .forEach((id) => dispatch(fetchUser(id)))
+    .value();
 };
 
 //ASYNC ACTION CREATOR WITH REDUX THUNK
